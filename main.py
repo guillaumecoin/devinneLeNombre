@@ -58,11 +58,13 @@ def Start():
         Text_Resultat.set("Victoire!")
         reponse = retourBdd(selected_niveau)
         if NombreDeCoups < reponse:
-
-            MonNom = tk.Entry(gui, width=15)
-            MonNom.pack_forget()
-            Send = tk.Button(gui, height=1, width=10, text="Envoyer", command= lambda : envoieBdd(NombreDeCoups, MonNom, selected_niveau))
-            Send.pack_forget()
+            Text_Resultat.set("Entrez votre prénom")
+            MonNom = tk.Entry(gui, width=30)
+            MonNom.insert(0, "value")
+            MonNom.pack()
+            Send = tk.Button(gui, height=1, width=10, text="Envoyer",
+                             command=lambda: envoieBdd(NombreDeCoups, MonNom.get(), int(selected_niveau)))
+            Send.pack()
             Text_Resultat.set("Vous avez battu le record")
 
 
@@ -84,6 +86,7 @@ def items_selected(event):
     #print(selected_niveau)
     global nombreADeviner
     nombreADeviner = random.randint(0, niveau[int(selected_niveau)])
+
     Text_Resultat.set(" ")
 def envoieBdd(NombreDeCoups, Nom, selected_niveau):
     # connection a la base de données + modification du meilleur score si inférieur par niveau
@@ -94,7 +97,7 @@ def envoieBdd(NombreDeCoups, Nom, selected_niveau):
     request = "update meilleurscore \
                        set meilleur_score = %s, nom_score = %s  \
                        where niveau_score = %s"
-    params = (NombreDeCoups, Nom, int(selected_niveau))
+    params = (NombreDeCoups, Nom, selected_niveau)
     cursor.execute(request, params)
     conn.commit()
        # On ferme la connexion
@@ -102,18 +105,8 @@ def envoieBdd(NombreDeCoups, Nom, selected_niveau):
         conn.close()
 
 
-
-
-
-
-
-
-
-
-
 label_NbrCoups = tk.Label(gui, textvariable=Text_NbrCoups)
 label_NbrCoups.pack()
-
 label_Niveau = Label(gui, text="Selectionner le niveau")
 label_Niveau.pack()
 liste = Listbox(gui)
@@ -129,28 +122,11 @@ liste.insert(9, " 9")
 liste.insert(10, " 10")
 liste.pack()
 
-
-
-
-
 MonNombre = tk.Entry(gui, width=15)
 MonNombre.pack(pady=20)
-
-MonNom = tk.Entry(gui, width=30)
-MonNom.insert(0,"value")
-MonNom.pack()
-
-Send = tk.Button(gui, height=1, width=10, text="Envoyer",
-               command=lambda: envoieBdd(1, MonNom.get(), 1))
-Send.pack()
-
-
 btn = tk.Button(gui, height=1, width=10, text="Start", command=Start)
 btn.pack()
 label_Resultat = tk.Label(gui, textvariable=Text_Resultat)
 label_Resultat.pack()
 liste.bind('<<ListboxSelect>>', items_selected)
-
-
-
 gui.mainloop()
