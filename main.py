@@ -77,6 +77,8 @@ def Start():
             Text_Resultat.set("Chercher un nombre plus grand")
     Text_NbrCoups.set("Nombre de coups actuel: " + str(NombreDeCoups))
 
+
+#récupérer le niveau
 def items_selected(event):
     # get all selected indices
     selected_indices = liste.curselection()
@@ -84,6 +86,10 @@ def items_selected(event):
     global  selected_niveau
     selected_niveau = ",".join([liste.get(i) for i in selected_indices])
     #print(selected_niveau)
+
+    reponseScore = retourBdd(selected_niveau)
+    print('Niveau {0} à pour score {1} '.format(selected_niveau, reponseScore))
+
     global nombreADeviner
     nombreADeviner = random.randint(0, niveau[int(selected_niveau)])
 
