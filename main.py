@@ -80,6 +80,7 @@ def Start():
 
 #récupérer le niveau
 def items_selected(event):
+
     # get all selected indices
     selected_indices = liste.curselection()
     # get selected items
@@ -88,7 +89,13 @@ def items_selected(event):
     #print(selected_niveau)
 
     reponseScore = retourBdd(selected_niveau)
-    print('Niveau {0} à pour score {1} '.format(selected_niveau, reponseScore))
+    #print('Niveau {0} à pour score {1} '.format(selected_niveau, reponseScore))
+
+    obj = tk.Label(text='Niveau {0} à pour score {1} '.format(selected_niveau, reponseScore))
+    # ...
+    obj.pack()
+    obj.pack_forget()
+
 
     global nombreADeviner
     nombreADeviner = random.randint(0, niveau[int(selected_niveau)])
